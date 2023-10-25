@@ -55,7 +55,7 @@ void mainMenu()
             case 2:
             {
                 system("cls");
-                patientObject1.option2();
+                patientObject1.menuInformation();
                 break;
             }
             case 3:

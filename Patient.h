@@ -1,16 +1,17 @@
 #pragma once
-#include <iostream>
+#include<iostream>
 #include <string>
 #include<queue>
 using namespace std;
 
-void mainMenu();
-int inputInteger(string prompt, int startRange, int endRange);
+char inputChar(string prompt, string lookup);
 char inputChar(string prompt, char yes, char no);
 int inputInteger(string prompt, bool posNeg);
+int inputInteger(string prompt, int startRange, int endRange);
+double inputDouble(string prompt);
+void mainMenu();
 
-class Patient
-{
+class Patient {
 private:
 	int priority;
 	unsigned int checkedInTime;
@@ -20,41 +21,35 @@ private:
 	unsigned int admittedTime;
 	string careUnit;
 	static string ER_description[5];
+	//STL queue of the class
+	priority_queue<Patient> pq2;
+	//STL to hold the data
+	priority_queue<Patient> submit;
+	//STL to hold the copy of the submit
+	priority_queue<Patient>copy;
 public:
-
+	//defualt constructor
 	Patient();
 
-	void setCheckedInTime(unsigned int t);
-
+	//getters(accesors)
 	unsigned int getCheckedInTime() const;
-
-	void setPriority(int priority);
-
 	int getPriority() const;
-
-	void setName(string name);
-
 	string getName() const;
-
-	void setAge(int age);
-
 	int getAge() const;
-
-	void setGender(char gender);
-
 	char getGender() const;
 
-	friend bool operator <(const Patient& P1, const Patient& P2); //key in priority queue
+	//setters(mutators)
+	void setCheckedInTime(unsigned int newT);
+	void setPriority(int newPriority);
+	void setName(string newName);
+	void setAge(int newAge);
+	void setGender(char newGender);
 
+	//overloading operators
+	//key in priority queue
+	friend bool operator <(const Patient& P1, const Patient& P2);
 	friend ostream& operator<<(ostream& outs, const Patient& obj);
 
-	//void engine();
-	void option2();
+	//memnber function to get the whole menu
+	void menuInformation();
 };
-
-//bool operator <(const Patient& P1, const Patient& P2);
-//
-//string Patient::ER_description[5];
-//
-//ostream& operator <<(ostream& outs, const Patient& obj);
-
