@@ -4,13 +4,13 @@
  CPMR 131 - Professor Q
 
  Credit:
- Part 1:
- Part 2:
- Part 3:
+ Part 1: John Kim & Saul Merino
+ Part 2: Thanh Tran, Erik Santana & Christian Hernandez
+ Part 3: Joe Bryant & Otoniel Torres Bernal
  */
 
 #include "input.h"
-#include<queue>
+#include "Patient.h"
 using namespace std;
 
 void mainMenu();
@@ -26,7 +26,7 @@ int main()
 // Post-Condition: no return. Main menu
 void mainMenu()
 {
-
+    Patient patientObject1;
 
     cout << endl;
     cout << "\tCMPR131 - Chapter 8: Applications using Queues by Erik Santana (10 / 20/ 23)";
@@ -54,7 +54,8 @@ void mainMenu()
             }
             case 2:
             {
-                system("cls");  
+                system("cls");
+                patientObject1.option2();
                 break;
             }
             case 3:
