@@ -4,6 +4,7 @@
 #include<queue>
 using namespace std;
 
+//input (1) header files inputs validation
 char inputChar(string prompt, string lookup);
 char inputChar(string prompt, char yes, char no);
 int inputInteger(string prompt, bool posNeg);
@@ -44,6 +45,8 @@ public:
 	void setName(string newName);
 	void setAge(int newAge);
 	void setGender(char newGender);
+
+	void displayCheckedInTime() const;
 
 	//overloading operators
 	//key in priority queue

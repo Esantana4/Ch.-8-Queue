@@ -62,6 +62,17 @@ void Patient::setGender(char newGender) {
 
 //precondition:
 //postcondition:
+void Patient::displayCheckedInTime() const {
+	tm timeInfo;
+	time_t timeValue = static_cast<time_t>(checkedInTime);
+	localtime_s(&timeInfo, &timeValue);
+	char timeString[80];
+	strftime(timeString, 80, "%H:%M:%S", &timeInfo);
+	cout << timeString << "\n";
+}
+
+//precondition:
+//postcondition:
 bool operator<(const Patient& P1, const Patient& P2) {
 	return P1.priority < P2.priority;
 }
@@ -73,7 +84,8 @@ string Patient::ER_description[5] = { "Stable, with no resources anticipated or 
 //postcondition:
 ostream& operator<<(ostream& outs, const Patient& obj) {
 	outs << "ER level: " << obj.getPriority() << " - " << obj.ER_description[obj.getPriority() - 1] << '\n';
-	outs << "\t\t\tChecked-In time: " << obj.getCheckedInTime() << '\n';
+	outs << "\t\t\tChecked-In time: ";
+	obj.displayCheckedInTime();
 	outs << "\t\t\tPatient's name: " << obj.getName() << '\n';
 	outs << "\t\t\tPatient's age: " << obj.getAge() << '\n';
 	outs << "\t\t\tPatient's gender: " << obj.getGender() << '\n';
@@ -89,9 +101,7 @@ void Patient::menuInformation() {
 		cout << "\n\t\t A> Register a patient";
 		cout << "\n\t\t B> Transfer patient(s) to the designation";
 		cout << "\n\t\t C> Display transferred patients";
-		cout << "\n\t" << string(80, char(169)) << endl;
 		cout << "\n\t\t 0> return\n";
-		cout << "\t" << string(80, char(205)) << endl;
 		switch (toupper(inputChar("\t\t Option: ", "ABC0"))) {
 		case 'A': {
 			Patient patient;
@@ -100,7 +110,7 @@ void Patient::menuInformation() {
 			getline(cin, name);
 			patient.setName(name);
 			patient.setAge(inputInteger("\t\tEnter the patient's age: ", true));
-			patient.setCheckedInTime(time(0));
+			patient.setCheckedInTime(static_cast<unsigned int>(time(0)));
 			patient.setGender(toupper(inputChar("\t\tChoose the patient's gender (F-female or M - male) : ", 'F', 'M')));
 			patient.setPriority(inputInteger("\t\tChoose the ER level 1)Non-urgent, 2)Less Urgent, 3)Urgent, 4)Emergent, or 5)Resuscitation: ", 1, 5));
 			pq2.push(patient); // enqueue
@@ -113,36 +123,33 @@ void Patient::menuInformation() {
 				cout << "\n\t\tNo register patient to transfer to the designation.\n";
 				break;
 			}
-			if (pq2.top().getPriority() == 5) {
-				submit.push(pq2.top());
-				cout << "\n\t\t" << pq2.top().getName() << " - transfers to ICU...\n";
-				pq2.pop(); // dequeue
-				break;
+			//push the top to the submit that holds the data of the priority queue
+			submit.push(pq2.top());
+			cout << "\n\t\t" << pq2.top().getName() << " - ";
+			switch (pq2.top().getPriority()) {
+			case 5: {
+				cout << "transfers to ICU...\n";
 			}
-			else if (pq2.top().getPriority() == 4) {
-				submit.push(pq2.top());
-				cout << "\n\t\t" << pq2.top().getName() << " - transfers to surgery room...\n";
-				pq2.pop();
-				break;
+				  break;
+			case 4: {
+				cout << "transfers to surgery room...\n";
 			}
-			else if (pq2.top().getPriority() == 3) {
-				submit.push(pq2.top());
-				cout << "\n\t\t" << pq2.top().getName() << " - transfers to emergency room...\n";
-				pq2.pop();
-				break;
+				  break;
+			case 3: {
+				cout << "transfers to emergency room...\n";
 			}
-			else if (pq2.top().getPriority() == 2) {
-				submit.push(pq2.top());
-				cout << "\n\t\t" << pq2.top().getName() << " - transfers to xray lab...\n";
-				pq2.pop();
-				break;
+				  break;
+			case 2: {
+				cout << "transfers to xray lab...\n";
 			}
-			else if (pq2.top().getPriority() == 1) {
-				submit.push(pq2.top());
-				cout << "\n\t\t" << pq2.top().getName() << " - examines and gives prescription...\n";
-				pq2.pop();
-				break;
+				  break;
+			case 1: {
+				cout << "examines and gives prescription...\n";
 			}
+				  break;
+			}
+			//pop the priorties so it does not read the same ones
+			pq2.pop();
 		}
 				break;
 		case 'C': {
